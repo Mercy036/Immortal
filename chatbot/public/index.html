@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMMORTAL - Arena Mentor</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+    
+    :root {
+      --bg: #000000;
+      --text: #aaaaaa;
+      --highlight: #ffffff;
+      --accent: #333333;
+    }
+    
+    * {
+      box-sizing: border-box;
+      font-family: 'JetBrains Mono', Courier, monospace;
+    }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Subtle CRT effect overlay */
+    body::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+      background-size: 100% 4px;
+      z-index: 100;
+      pointer-events: none;
+    }
+    
+    .chat-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    /* Used media query so on large screens it looks like a terminal window */
+    @media (min-width: 900px) {
+      .chat-container {
+        height: 90vh;
+        max-width: 1000px;
+        border: 1px solid var(--accent);
+      }
+    }
+    
+    .header {
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-transform: uppercase;
+    }
+    
+    .header .subtitle {
+      color: var(--accent);
+      letter-spacing: 6px;
+      font-size: 0.75rem;
+    }
+    
+    .header h1 {
+      margin: 0;
+      color: var(--highlight);
+      font-size: 2.2rem;
+      letter-spacing: 14px;
+      font-weight: 700;
+    }
+    
+    .header .tagline {
+      color: var(--text);
+      letter-spacing: 4px;
+      font-size: 0.7rem;
+    }
+    
+    .messages {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      scroll-behavior: smooth;
+    }
+    
+    /* Minimal Scrollbar */
+    .messages::-webkit-scrollbar { width: 4px; }
+    .messages::-webkit-scrollbar-track { background: transparent; }
+    .messages::-webkit-scrollbar-thumb { background: var(--accent); }
+    
+    .message {
+      line-height: 1.8;
+      font-size: 0.95rem;
+      animation: fadeIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+    
+    .message.bot {
+      color: var(--text);
+      padding-left: 20px;
+      border-left: 2px solid var(--accent);
+    }
+    
+    .message.bot::before {
+      content: "STATUS: ACTIVE // MENTOR UPLINK";
+      display: block;
+      color: var(--accent);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+    
+    .message.user {
+      color: var(--highlight);
+      text-align: right;
+      padding-right: 20px;
+      border-right: 2px solid var(--accent);
+      align-self: flex-end;
+      max-width: 80%;
+    }
+    
+    .message.user::before {
+      content: "CHALLENGER // INPUT";
+      display: block;
+      color: var(--accent);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .message strong {
+      color: var(--highlight);
+      font-weight: 700;
+    }
+
+    .message .code-inline {
+      background: #111;
+      border: 1px solid #222;
+      padding: 2px 6px;
+      color: #ddd;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .loading {
+      color: var(--accent);
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      display: none;
+      margin-left: 40px;
+      margin-bottom: 20px;
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .input-area {
+      padding: 30px 40px;
+      border-top: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .input-area::before {
+      content: ">";
+      color: var(--highlight);
+      font-weight: 700;
+      animation: blink 1s step-end infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--highlight);
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      letter-spacing: 1px;
+    }
+    
+    input::placeholder {
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="header">
+    <div class="subtitle">SYSTEM INITIALIZATION ACTIVE</div>
+    <h1>IMMORTAL</h1>
+    <div class="tagline">THE ERA OF COMPETITIVE COMPLEXITY</div>
+  </div>
+  
+  <div class="messages" id="messages">
+    <div class="message bot">
+      Initialize sequence... Connection stable.<br><br>Greetings, challenger. I am the <strong>Arena Mentor</strong>. Ask me any question about strategy or code complexity for your upcoming duel.
+    </div>
+  </div>
+  
+  <div class="loading" id="loading">
+    AWAITING RESPONSE ...
+  </div>
+  
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Press any key to enter the arena..." autocomplete="off" />
+  </div>
+</div>
+
+<script>
+  const messagesDiv = document.getElementById('messages');
+  const userInput = document.getElementById('userInput');
+  const loading = document.getElementById('loading');
+
+  // Parse markdown-like text for code blocks and bold
+  function formatReply(text) {
+    let formatted = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    formatted = formatted.replace(/\n/g, "<br>");
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    formatted = formatted.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    formatted = formatted.replace(/`([^`]+)`/g, "<span class='code-inline'>$1</span>");
+    return formatted;
+  }
+
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+
+    appendMessage(text, 'user');
+    userInput.value = '';
+    loading.style.display = 'block';
+    
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      const data = await response.json();
+      
+      loading.style.display = 'none';
+      if (data.reply) {
+        appendMessage(data.reply, 'bot');
+      } else {
+        appendMessage("Error: Signal lost.", 'bot');
+      }
+    } catch (error) {
+      loading.style.display = 'none';
+      appendMessage("Communication failure. Try again.", 'bot');
+    }
+  }
+
+  function appendMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `message ${sender}`;
+    div.innerHTML = sender === 'bot' ? formatReply(text) : text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    messagesDiv.appendChild(div);
+    
+    setTimeout(() => {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 10);
+  }
+
+  userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+  
+  window.onload = () => userInput.focus();
+</script>
+</body>
+</html>

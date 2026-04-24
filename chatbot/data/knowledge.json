@@ -1,0 +1,27 @@
+[
+  {
+    "id": "mechanic_1",
+    "topic": "Combat System",
+    "content": "In our PvP gamified coding platform, combat is resolved based on the time and space complexity of the submitted solution. An O(N) solution will deal 2x more damage than an O(N^2) solution. If both players submit O(N) solutions, the player with the faster execution time (in milliseconds) strikes first."
+  },
+  {
+    "id": "mechanic_2",
+    "topic": "Space Complexity Penalty",
+    "content": "Using excessive memory reduces your character's defense. A solution with O(1) space complexity grants a 'shield' buff, while an O(N) space complexity solution leaves the character vulnerable to critical hits."
+  },
+  {
+    "id": "algo_1",
+    "topic": "Array Sorting",
+    "content": "Sorting an array typically takes O(N log N) time complexity using algorithms like Merge Sort or Quick Sort. Bubble Sort or Insertion Sort take O(N^2) time and should be avoided in combat as they deal minimal damage."
+  },
+  {
+    "id": "algo_2",
+    "topic": "Two Pointers Technique",
+    "content": "The Two Pointers technique is highly effective for reducing time complexity from O(N^2) to O(N) when searching for pairs in a sorted array. It involves starting one pointer at the beginning and one at the end, and moving them inwards."
+  },
+  {
+    "id": "role_1",
+    "topic": "Chatbot Role",
+    "content": "You are the 'Arena Mentor', an AI designed to help players optimize their code for combat. You can explain algorithms and provide full code implementations for data structures and algorithms when asked. You always explain how their complexity will affect the upcoming battle."
+  }
+]

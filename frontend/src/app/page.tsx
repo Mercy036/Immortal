@@ -5,24 +5,6 @@ import NavMenu from "@/components/nav-menu";
 export default function Home() {
   return (
     <AuroraBackground showRadialGradient={true} animationSpeed={25}>
-      {/* Top Navigation Bar */}
-      <nav className="fixed top-8 left-0 right-0 px-10 md:px-20 lg:px-32 flex items-center justify-between z-[100]">
-        {/* Branding (Left) */}
-        <div className="flex items-center gap-4 min-w-[120px]">
-          <div className="h-2 w-2 rounded-full bg-white/20 animate-pulse"></div>
-          <div className="text-[10px] md:text-[11px] font-bold tracking-[0.5em] text-white/50 uppercase">
-            Immortal
-          </div>
-        </div>
-        
-        {/* Animated Nav Menu (Center) */}
-        <div className="hidden lg:block absolute left-1/2 -translate-x-1/2">
-          <NavMenu />
-        </div>
-        
-        {/* Spacer for balance */}
-        <div className="min-w-[120px]"></div>
-      </nav>
 
       {/* Hero Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 min-h-screen">

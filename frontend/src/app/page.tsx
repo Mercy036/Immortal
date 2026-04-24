@@ -7,7 +7,7 @@ export default function Home() {
     <AuroraBackground showRadialGradient={true} animationSpeed={25}>
 
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 min-h-screen">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 min-h-[calc(100vh-80px)]">
         <div className="mb-8 inline-flex items-center rounded-full border border-white/5 bg-white/[0.02] px-5 py-2 text-[10px] font-medium tracking-[0.5em] text-white/20 uppercase backdrop-blur-sm">
           System Initialization Active
         </div>

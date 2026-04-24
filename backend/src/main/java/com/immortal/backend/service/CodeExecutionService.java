@@ -44,7 +44,15 @@ public class CodeExecutionService {
         double totalExecutionTime = 0.0;
         double maxMemoryUsage = 0.0;
 
-        for (TestCase testCase : problem.getTestCases()) {
+        java.util.List<TestCase> testCases = problem.getTestCases();
+        if (testCases == null || testCases.isEmpty()) {
+            log.warning("Problem " + problem.getId() + " has no test cases. Cannot evaluate.");
+            submission.setStatus(Submission.SubmissionStatus.RUNTIME_ERROR);
+            submissionRepository.save(submission);
+            return;
+        }
+
+        for (TestCase testCase : testCases) {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("source_code", submission.getCode());
             requestBody.put("language_id", getLanguageId(submission.getLanguage()));

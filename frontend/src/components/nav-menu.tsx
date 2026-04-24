@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -17,6 +17,21 @@ const navItems = [
 export default function NavMenu() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+  const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
+
+  useEffect(() => {
+    import("@/lib/api").then(({ isAuthenticated }) => {
+      setIsAuthenticatedUser(isAuthenticated());
+    });
+  }, [pathname]);
+
+  const handleLogout = () => {
+    import("@/lib/api").then(({ removeToken }) => {
+      removeToken();
+      window.location.reload();
+    });
+  };
 
   return (
     <nav className="relative flex items-center justify-center py-2 px-4">
@@ -68,6 +83,24 @@ export default function NavMenu() {
             </li>
           );
         })}
+        
+        <li className="ml-4">
+          {isAuthenticatedUser ? (
+            <button 
+              onClick={handleLogout}
+              className="px-4 py-2 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] text-red-400/80 hover:text-red-400 border border-red-500/20 rounded-lg hover:bg-red-500/10 transition-all"
+            >
+              DISCONNECT
+            </button>
+          ) : (
+            <button 
+              onClick={() => router.push("/login")}
+              className="px-4 py-2 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 rounded-lg hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all"
+            >
+              AUTHENTICATE
+            </button>
+          )}
+        </li>
       </ul>
     </nav>
   );
